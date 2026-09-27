@@ -87,10 +87,11 @@ $ python -m fixrank rank --sast examples/findings.sarif --kev examples/kev.csv -
     "title": "log4j-core 2.14.1 is vulnerable to Log4Shell"
 ```
 
-As a CI gate, and what a bad config looks like:
+As a CI gate, and what a bad config looks like. The warning appears because this run leaves out the pentest CSV that `PT-001` comes from; a reachability verdict that matches nothing is usually a typo in a finding id, so fixrank says so instead of quietly scoring the finding as `unknown`:
 
 ```
 $ python -m fixrank rank --sast examples/findings.sarif --kev examples/kev.csv --epss examples/epss.csv --reach examples/reach.csv --inventory examples/assets.yaml --fail-above 150 > /dev/null
+fixrank: warning: 1 reachability verdict(s) match no finding and were ignored: PT-001
 fixrank: 10 finding(s) ranked
 fixrank: 1 finding(s) at or above 150: SCA-001
 $ echo $?

@@ -280,3 +280,12 @@ def test_markdown_escapes_pipes_and_empty_queue():
     assert "a\\|b" in md and "title \\| with pipe" in md
     assert "No findings." in to_markdown([])
     assert json.loads(to_json([])) == []
+
+
+def test_warns_about_reachability_verdicts_that_match_nothing(tmp_path, capsys):
+    reach = tmp_path / "reach.csv"
+    reach.write_text("finding_id,reachability\nF-1,reachable\nF-l,reachable\n")  # typo: F-l
+    code, out, err = run(capsys, "rank", "--csv", FX / "findings.csv", "--reach", reach, "--format", "json")
+    assert code == 0
+    assert "1 reachability verdict(s) match no finding and were ignored: F-l" in err
+    assert json.loads(out)[0]["id"] == "F-1"
