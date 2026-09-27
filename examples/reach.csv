@@ -1,0 +1,10 @@
+finding_id,reachability
+SCA-001,reachable
+SCA-002,unknown
+SCA-003,suspected
+SCA-004,unknown
+SCA-005,unknown
+SCA-006,unknown
+SAST-001,reachable
+SAST-002,suspected
+PT-001,reachable

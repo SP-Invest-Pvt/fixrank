@@ -1,0 +1,67 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "dependency-scan",
+          "rules": [
+            {"id": "CVE-2021-44228", "shortDescription": {"text": "Log4Shell: JNDI lookup in log4j-core"}, "properties": {"security-severity": "10.0"}},
+            {"id": "CVE-2022-22965", "shortDescription": {"text": "Spring4Shell: data binding RCE in spring-beans"}, "properties": {"security-severity": "9.8"}},
+            {"id": "CVE-2022-42889", "shortDescription": {"text": "Text4Shell: interpolation RCE in commons-text"}, "properties": {"security-severity": "9.8"}},
+            {"id": "CVE-2023-46604", "shortDescription": {"text": "ActiveMQ OpenWire deserialization RCE"}, "properties": {"security-severity": "10.0"}},
+            {"id": "CVE-2020-36518", "shortDescription": {"text": "jackson-databind deep nesting DoS"}, "properties": {"security-severity": "7.5"}}
+          ]
+        }
+      },
+      "results": [
+        {"ruleId": "CVE-2021-44228", "level": "error", "properties": {"id": "SCA-001"},
+         "message": {"text": "log4j-core 2.14.1 is vulnerable to Log4Shell"},
+         "locations": [{"physicalLocation": {"artifactLocation": {"uri": "services/payments-api/pom.xml"}, "region": {"startLine": 41}}}]},
+        {"ruleId": "CVE-2021-44228", "level": "error", "properties": {"id": "SCA-002"},
+         "message": {"text": "log4j-core 2.14.1 is vulnerable to Log4Shell"},
+         "locations": [{"physicalLocation": {"artifactLocation": {"uri": "services/billing-batch/pom.xml"}, "region": {"startLine": 37}}}]},
+        {"ruleId": "CVE-2022-22965", "level": "error", "properties": {"id": "SCA-003"},
+         "message": {"text": "spring-beans 5.3.17 is vulnerable to Spring4Shell"},
+         "locations": [{"physicalLocation": {"artifactLocation": {"uri": "services/admin-portal/pom.xml"}, "region": {"startLine": 52}}}]},
+        {"ruleId": "CVE-2022-42889", "level": "error", "properties": {"id": "SCA-004"},
+         "message": {"text": "commons-text 1.9 is vulnerable to Text4Shell"},
+         "locations": [{"physicalLocation": {"artifactLocation": {"uri": "services/payments-api/pom.xml"}, "region": {"startLine": 58}}}]},
+        {"ruleId": "CVE-2023-46604", "level": "error", "properties": {"id": "SCA-005"},
+         "message": {"text": "activemq-client 5.15.15 is vulnerable to CVE-2023-46604"},
+         "locations": [{"physicalLocation": {"artifactLocation": {"uri": "services/billing-batch/pom.xml"}, "region": {"startLine": 44}}}]},
+        {"ruleId": "CVE-2020-36518", "level": "warning", "properties": {"id": "SCA-006"},
+         "message": {"text": "jackson-databind 2.12.1 is vulnerable to CVE-2020-36518"},
+         "locations": [{"physicalLocation": {"artifactLocation": {"uri": "tools/load-test/pom.xml"}, "region": {"startLine": 22}}}]}
+      ]
+    },
+    {
+      "tool": {
+        "driver": {
+          "name": "semgrep",
+          "rules": [
+            {"id": "java.sql-injection", "shortDescription": {"text": "SQL built from request input"}, "properties": {"security-severity": "8.8"}},
+            {"id": "java.xss", "shortDescription": {"text": "Unescaped request input in HTML"}, "properties": {"security-severity": "6.1"}},
+            {"id": "generic.hardcoded-secret", "shortDescription": {"text": "Hard-coded credential"}},
+            {"id": "java.weak-hash", "shortDescription": {"text": "MD5 used for integrity"}}
+          ]
+        }
+      },
+      "results": [
+        {"ruleId": "java.sql-injection", "level": "error", "properties": {"id": "SAST-001"},
+         "message": {"text": "Order id from the request is concatenated into SQL"},
+         "locations": [{"physicalLocation": {"artifactLocation": {"uri": "services/payments-api/src/main/java/com/acme/pay/OrderRepository.java"}, "region": {"startLine": 88}}}]},
+        {"ruleId": "java.xss", "level": "warning", "properties": {"id": "SAST-002"},
+         "message": {"text": "Display name written to the page without escaping"},
+         "locations": [{"physicalLocation": {"artifactLocation": {"uri": "services/admin-portal/src/main/java/com/acme/admin/ProfileView.java"}, "region": {"startLine": 31}}}]},
+        {"ruleId": "generic.hardcoded-secret", "level": "warning", "properties": {"id": "SAST-003"},
+         "message": {"text": "Password literal in load test config"},
+         "locations": [{"physicalLocation": {"artifactLocation": {"uri": "tools/load-test/src/Config.java"}, "region": {"startLine": 12}}}]},
+        {"ruleId": "java.weak-hash", "level": "note", "properties": {"id": "SAST-004"},
+         "message": {"text": "MD5 checksum on invoice export"},
+         "locations": [{"physicalLocation": {"artifactLocation": {"uri": "services/billing-batch/src/main/java/com/acme/billing/Export.java"}, "region": {"startLine": 64}}}]}
+      ]
+    }
+  ]
+}

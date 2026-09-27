@@ -1,0 +1,18 @@
+# Longest matching path_prefix wins. Files that match nothing are treated as non-prod.
+assets:
+  - name: payments-api
+    path_prefix: services/payments-api/
+    prod: true
+    internet_facing: true
+  - name: admin-portal
+    path_prefix: services/admin-portal/
+    prod: true
+    internet_facing: false
+  - name: billing-batch
+    path_prefix: services/billing-batch/
+    prod: true
+    internet_facing: false
+  - name: load-test
+    path_prefix: tools/load-test/
+    prod: false
+    internet_facing: false
