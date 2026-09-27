@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fixrank"
+version = "0.1.0"
+description = "Rank security findings by what to fix first: severity, KEV, EPSS, reachability and asset exposure, with an auditable rationale per finding"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+dependencies = ["pyyaml>=6"]
+
+[project.optional-dependencies]
+test = ["pytest>=8", "pytest-cov>=5"]
+
+[project.scripts]
+fixrank = "fixrank.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["fixrank*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
