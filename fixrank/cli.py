@@ -51,6 +51,10 @@ def cmd_rank(a: argparse.Namespace) -> int:
         reach=load_reach(a.reach) if a.reach else {},
         assets=load_inventory(a.inventory) if a.inventory else [],
     )
+    unmatched = sorted(set(ctx.reach) - {f.id for f in findings})
+    if unmatched:
+        _log(f"warning: {len(unmatched)} reachability verdict(s) match no finding and were ignored: "
+             f"{', '.join(unmatched[:5])}{' ...' if len(unmatched) > 5 else ''}")
     ranked = rank(findings, ctx, cfg)
     out = to_json(ranked) if a.format == "json" else to_markdown(ranked)
     if a.output:
