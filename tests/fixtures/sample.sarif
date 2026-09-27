@@ -1,0 +1,11 @@
+{"version": "2.1.0", "runs": [{
+  "tool": {"driver": {"name": "t", "rules": [
+    {"id": "CVE-2021-44228", "properties": {"security-severity": "10.0"}},
+    {"id": "java.xss", "defaultConfiguration": {"level": "warning"}}]}},
+  "results": [
+    {"ruleId": "CVE-2021-44228", "level": "error", "properties": {"id": "F-1"}, "message": {"text": "log4j\nsecond line"},
+     "locations": [{"physicalLocation": {"artifactLocation": {"uri": "services/web/pom.xml"}, "region": {"startLine": 10}}}]},
+    {"ruleId": "java.xss", "message": {"text": "xss"},
+     "locations": [{"physicalLocation": {"artifactLocation": {"uri": "services/web/View.java"}, "region": {"startLine": 7}}}]},
+    {"ruleId": "custom", "level": "note", "guid": "g-1", "properties": {"severity": "Critical", "cve": "cve-2020-36518"}, "message": {"text": "x"}}
+  ]}]}

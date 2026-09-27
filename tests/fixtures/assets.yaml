@@ -1,0 +1,12 @@
+assets:
+  - name: web
+    path_prefix: services/web/
+    prod: true
+    internet_facing: true
+  - name: web-admin
+    path_prefix: services/web/admin/
+    prod: true
+    internet_facing: false
+  - name: scripts
+    path_prefix: scripts/
+    prod: false

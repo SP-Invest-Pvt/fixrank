@@ -1,0 +1,4 @@
+id,rule_id,severity,cve,file,line,title
+F-1,log4j,critical,CVE-2021-44228,services/web/pom.xml,10,Log4Shell
+F-2,sqli,high,,services/web/admin/Repo.java,5,SQL injection
+F-3,weak-hash,low,,unmapped/Thing.java,1,MD5
