@@ -2,13 +2,13 @@
 
 Rank security findings by what to fix first, and show the arithmetic behind every position in the queue.
 
-[![ci](https://github.com/SP-Invest-Pvt/fixrank/actions/workflows/ci.yml/badge.svg)](../../actions/workflows/ci.yml)
+[![ci](https://github.com/sp-kernel-stack/fixrank/actions/workflows/ci.yml/badge.svg)](../../actions/workflows/ci.yml)
 
 ## The problem
 
 AppSec queues are sorted by severity. Severity says how bad a vulnerability could be in general, not what to fix on Monday morning. A critical CVE in a load-test tool and the same CVE in an internet-facing payment service get the same label. A high-severity SQL injection that an attacker can actually reach sits below a dozen unreachable criticals.
 
-The signals that change the order already exist: CISA's Known Exploited Vulnerabilities (KEV) catalog says what attackers are using, EPSS estimates how likely exploitation is in the next 30 days, reachability analysis says whether your code calls the vulnerable path, and your asset inventory says what is in production and exposed. fixrank combines them with one fixed formula and writes the reason next to every score, so the order can be defended in a review.
+The signals that change the order already exist: CISA's Known Exploited Vulnerabilities (KEV) catalog says what attackers are using, EPSS estimates how likely a CVE is to be exploited, reachability analysis says whether your code calls the vulnerable path, and your asset inventory says what is in production and exposed. fixrank combines them with one fixed formula and writes the reason next to every score, so the order can be defended in a review.
 
 ## The formula
 
@@ -108,7 +108,7 @@ $ echo $?
 Python 3.11 or newer. The only dependency is PyYAML, for the inventory and config files.
 
 ```bash
-git clone https://github.com/SP-Invest-Pvt/fixrank && cd fixrank
+git clone https://github.com/sp-kernel-stack/fixrank && cd fixrank
 pip install -e ".[test]"
 pytest
 python -m fixrank --help
@@ -148,7 +148,7 @@ curl -sSfL https://epss.empiricalsecurity.com/epss_scores-current.csv.gz | gunzi
 python -m fixrank rank --sast findings.sarif --kev data/kev.csv --epss data/epss.csv ...
 ```
 
-The full EPSS file has a `percentile` column as well; fixrank ignores extra columns. Ranking the demo against the complete feeds (379,843 EPSS rows, 1,726 KEV entries on 2026-09-26) takes under a second. `data/` is git-ignored.
+The full EPSS file has a `percentile` column as well; fixrank ignores extra columns. `data/` is git-ignored.
 
 ## Config reference
 
@@ -165,7 +165,7 @@ Any key you leave out keeps its default. The config is checked when it loads. Un
 ## Limitations
 
 * **The weights are a starting point, not a calibrated model.** They encode a reasonable policy (known exploitation beats predicted exploitation, and exposure multiplies) but have not been fitted to incident data. Change them in the config and keep the file under review like any other policy.
-* **Reachability is an input, not something fixrank works out.** It trusts the verdicts in `--reach`. Tools such as [reachproof](https://github.com/SP-Invest-Pvt/reachproof) produce them; without that file, every finding counts as `unknown`.
+* **Reachability is an input, not something fixrank works out.** It trusts the verdicts in `--reach`. Tools such as [reachproof](https://github.com/sp-kernel-stack/reachproof) produce them; without that file, every finding counts as `unknown`.
 * **Asset matching is by path prefix.** That suits a monorepo. For findings from several repositories, give each `path_prefix` a repository-qualified path in both the scan and the inventory.
 * **One CVE per finding.** SCA findings that bundle several CVEs should be split upstream; fixrank scores one CVE per finding.
 * **EPSS is a probability, not a verdict.** A score near 1.0 for a CVE without a public exploit in your context still only adds up to 20 points, by design.
